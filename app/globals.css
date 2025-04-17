@@ -112,11 +112,25 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+html,
+body,
+:root {
+  height: 100%;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* TailwindV4에서는 cursor pointer가 사라졌음. 그래서 명시적으로 추가함. */
+  [role="button"],
+  button {
+    cursor: pointer;
+  }
+  :disabled {
+    cursor: default;
   }
 }

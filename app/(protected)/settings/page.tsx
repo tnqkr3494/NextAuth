@@ -1,22 +1,36 @@
 "use client";
 
-import { logout } from "@/actions/logout";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useTransition } from "react";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { settings } from "@/actions/settings";
+import { useSession } from "next-auth/react";
 
 const Settings = () => {
-  // client 컴포넌트에서 session을 가져오고 싶을 때
-  const user = useCurrentUser();
+  const { update } = useSession();
+  const [isPending, startTransition] = useTransition();
 
   const onClick = () => {
-    logout();
+    startTransition(() => {
+      settings({
+        name: "John Doe",
+      }).then(() => {
+        update();
+      });
+    });
   };
 
   return (
-    <div className="bg-white p-10 rounded-xl">
-      <button type="submit" onClick={onClick}>
-        Sign out
-      </button>
-    </div>
+    <Card className="w-[600px]">
+      <CardHeader>
+        <p className="text-2xl font-semibold text-center">🔐 Settings</p>
+      </CardHeader>
+      <CardContent>
+        <Button disabled={isPending} onClick={onClick}>
+          Update name
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -5,3 +5,10 @@ export const currentUser = async () => {
 
   return session?.user;
 };
+
+// for server component
+export const currnetRole = async () => {
+  const session = await auth();
+
+  return session?.user?.role;
+};
